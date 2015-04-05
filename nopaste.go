@@ -15,10 +15,15 @@ type Nopaste struct {
 	config *Config
 }
 
-func Run(config *Config, listen string) {
+func Run(configPath string) {
+	config, err := LoadConfig(configPath)
+	if err != nil {
+		log.Fatalf("cannot load config file: %v\n", err)
+		return
+	}
 	np := New(config)
 	http.Handle("/", np)
-	http.ListenAndServe(listen, nil)
+	http.ListenAndServe(config.Listen, nil)
 }
 
 func New(config *Config) *Nopaste {

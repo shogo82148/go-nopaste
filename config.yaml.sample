@@ -1,0 +1,3 @@
+base_url: /np
+listen: ":3000"
+data_dir: data
