@@ -32,6 +32,10 @@ func New(config *Config) *Nopaste {
 	}
 }
 
+func isAlnum(r rune) bool {
+	return ('a' <= r && r <= 'z') || ('A' <= r && r <= 'Z') || ('0' <= r && r <= '9')
+}
+
 func (np *Nopaste) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	upath := req.URL.Path
 
@@ -42,8 +46,10 @@ func (np *Nopaste) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	if p := strings.TrimPrefix(upath, np.config.Root+"/"); len(p) < len(upath) {
 		req.URL.Path = p
-		np.dataHandler(w, req)
-		return
+		if strings.IndexFunc(upath, isAlnum) != -1 {
+			np.dataHandler(w, req)
+			return
+		}
 	}
 
 	http.NotFound(w, req)
