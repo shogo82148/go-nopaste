@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 )
 
@@ -80,7 +81,7 @@ func (np *Nopaste) saveContent(w http.ResponseWriter, req *http.Request) {
 		serverError(w)
 		return
 	}
-	http.Redirect(w, req, np.config.Root+"/"+id, http.StatusFound)
+	http.Redirect(w, req, path.Join(np.config.Root, id), http.StatusFound)
 }
 
 func (np *Nopaste) dataHandler(w http.ResponseWriter, req *http.Request) {
