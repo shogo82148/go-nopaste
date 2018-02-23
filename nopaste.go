@@ -46,8 +46,8 @@ func (np *Nopaste) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if p := strings.TrimPrefix(upath, np.config.Root+"/"); len(p) < len(upath) {
-		req.URL.Path = p
-		if strings.IndexFunc(upath, isAlnum) != -1 {
+		if strings.IndexFunc(p, isAlnum) != -1 {
+			req.URL.Path = p
 			np.dataHandler(w, req)
 			return
 		}
